@@ -4,6 +4,8 @@
 
 This sample application will authenticate the user via OpenID Connect 1.0 and present the user's subject and tokens on the screen. Options to refresh the OAuth 2.0 access token and to refresh the authentication session are also demonstrated.
 
+Refer to the **Native Application SSO Developers Guide** at https://developer.pingidentity.com/en/napps-native-app-sso for more detailed information.
+
 
 ## Installation
 
@@ -16,4 +18,4 @@ Note: Due to the Application Transport Security (ATS) feature of iOS9, your Ping
 
 ## Disclaimer
 
-*This software is open sourced by Ping Identity but not supported commercially as such. Any questions/issues/comments should be directed to the "Developer Q&A" group in the Ping Identity Support Communities [https://community.pingidentity.com/collaborate].*
+*This software is open sourced by Ping Identity but not supported commercially as such. Any questions/issues/comments should be directed to the "Developer Q&A" group in the Ping Identity Support Communities https://community.pingidentity.com/collaborate.*
