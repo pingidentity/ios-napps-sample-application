@@ -1,10 +1,10 @@
-# iOS9 NAPPS Sample Application
+# iOS9 Native Application SSO Sample Application
 
-**ios-napps-sample-application** is a basic sample application to demonstrate using the new SFSafariViewController in iOS9 to facilitate native application single sign-on (NAPPS).
+**ios-napps-sample-application** is a basic sample application to demonstrate using the new SFSafariViewController in iOS9 to facilitate native application single sign-on.
 
 This sample application will authenticate the user via OpenID Connect 1.0 and present the user's subject and tokens on the screen. Options to refresh the OAuth 2.0 access token and to refresh the authentication session are also demonstrated.
 
-Refer to the **Native Application SSO Developers Guide** at https://developer.pingidentity.com/en/napps-native-app-sso for more detailed information.
+Refer to the **Mobile Application SSO Developers Guide** at https://developer.pingidentity.com/en/resources/napps-native-app-sso for more detailed information.
 
 
 ## Installation
