@@ -38,7 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
         
-        print("Received a message in handleOpenURL (application callback) for URL: \(url.absoluteString)", appendNewline: true)
+        print("*** Received application callback ***")
+        print("Application callback URL received: \(url.absoluteString)")
         
         // If the callback was for the OpenID Connect authentication, then handle the response
         let baseUrl = url.absoluteString.componentsSeparatedByString("?")[0]

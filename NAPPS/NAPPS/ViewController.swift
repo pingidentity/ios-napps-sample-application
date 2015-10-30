@@ -21,7 +21,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBAction func actionSignIn() {
 
         let authorizationUrl = buildAuthorizationUrl()
-        print("Using SFSafariViewController to redirect user to authorization url: \(authorizationUrl)")
+        print("*** Using SFSafariViewController to redirect user to authorization url: \(authorizationUrl) ***")
         
         // Present a SFSafariViewController to handle the websso flow
         let safariVC = SFSafariViewController(URL: NSURL(string: authorizationUrl)!)
@@ -33,7 +33,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
 
         // do a prompt=none re-auth
         let authorizationUrl = buildAuthorizationUrl("none")
-        print("Using an invisible SFSafariViewController to redirect user to authorization url: \(authorizationUrl)")
+        print("*** Using an invisible SFSafariViewController to redirect user to authorization url: \(authorizationUrl) ***")
         
         // Present an invisible SFSafariViewController to handle the websso flow
         let safariVC = SFSafariViewController(URL: NSURL(string: authorizationUrl)!)
@@ -59,6 +59,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     }
     
     func updateView() {
+
+        print("*** Updating the view ***")
         
         if (SessionManager.currentSession.inErrorState) {
             labelAuthenticationResult.text = SessionManager.currentSession.error_code

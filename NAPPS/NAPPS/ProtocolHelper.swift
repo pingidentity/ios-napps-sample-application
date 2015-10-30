@@ -28,6 +28,8 @@ let acr_valueOptions = ["urn:acr:form", "urn:acr:x509", "urn:acr:google", "urn:a
 // Helper function - Build the authorization request URL
 func buildAuthorizationUrl(prompt: String = "") -> String {
     
+    print("*** Building authorization URL ***")
+    
     // these two parameters MUST be unique values per request to tie the request to the application that requested it
     SessionManager.currentSession.state = NSUUID().UUIDString
     SessionManager.currentSession.code_challenge = NSUUID().UUIDString
@@ -51,7 +53,9 @@ func buildAuthorizationUrl(prompt: String = "") -> String {
 
 // Authentication step 1 - process the authorization response
 func handleAuthorizationResponse(url: NSURL) {
-    
+
+    print("*** Processing the authorization response ***")
+
     let queryItems = parseAttributes(url.query!, asType: ParseDataType.QueryString)
     
     if let tempError = queryItems["error"] {
@@ -87,6 +91,8 @@ func handleAuthorizationResponse(url: NSURL) {
 
 // Authentication step 2 - Swap the authorization code for the tokens (access_token, id_token & (optional) refresh_token)
 func swapAuthorizationCodeForTokens() {
+
+    print("*** Exchanging the authorization code for the tokens ***")
 
     // Build the request to the token endpoint
     let tokenUrl = pf_baseUrl + token_url
@@ -152,7 +158,7 @@ func swapAuthorizationCodeForTokens() {
             // Move to step 3 - Validate the ID Token
             validateIdToken()
         } else {
-            
+            print("!!! An error occurred: \(SessionManager.currentSession.error_code) !!!")
             // An error occured during the HTTP request to the token endpoint
             NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationFailed", object: nil)
         }
@@ -163,6 +169,8 @@ func swapAuthorizationCodeForTokens() {
 // Authentication step 3 - Validate the id_token to retrieve the authenticated user subject
 func validateIdToken() {
     
+    print("*** Validating the ID token ***")
+    
     // Note: We are using the OpenID Connect Basic Profile and because we got the id_token direct from the token endpoint, we don't need to validate the signature
     // id_token is a JWT which is [header].[payload].[signature] - we are only concerned with the payload contents
     // iOS doesn't have a base64urldecode function so we need to "convert" the base64urlencoded string to a base64encoded string
@@ -170,15 +178,19 @@ func validateIdToken() {
     
     let idTokenPayload = NSString(data: NSData(base64EncodedString: idTokenPayloadString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!, encoding: NSUTF8StringEncoding)
     let idTokenAttributes = parseAttributes(idTokenPayload!, asType: ParseDataType.JSON)
-    
+
     // Check the issuer matches the issuer
-    if idTokenAttributes["iss"] as! String != issuer {
+    if idTokenAttributes["iss"] as? String != issuer {
+        let idTokenIssuer = idTokenAttributes["iss"]
+        print("Error: Invalid issuer - \(idTokenIssuer) != \(issuer)")
         SessionManager.currentSession.inErrorState = true
         SessionManager.currentSession.error_description = "Invalid Issuer"
     }
 
     // Check the audience matches the client_id
-    if idTokenAttributes["aud"] as! String != client_id {
+    if idTokenAttributes["aud"] as? String != client_id {
+        let idTokenAudience = idTokenAttributes["aud"]
+        print("Error: Invalid audience - \(idTokenAudience) != \(client_id)")
         SessionManager.currentSession.inErrorState = true
         SessionManager.currentSession.error_description = "Invalid Audience"
     }
@@ -188,6 +200,7 @@ func validateIdToken() {
         let expires = NSDate(timeIntervalSince1970: idTokenAttributes["exp"] as! Double)
         
         if expires.compare(NSDate()) == NSComparisonResult.OrderedAscending {
+            print("Error: ID token has expired")
             SessionManager.currentSession.inErrorState = true
             SessionManager.currentSession.error_description = "Token Expired"
         }
@@ -203,7 +216,7 @@ func validateIdToken() {
         // Move to step 4 - Query the UserInfo endpoint to retrieve additional attributes
         queryUserInfoEndpoint()
     } else {
-        
+        print("!!! An error occurred: \(SessionManager.currentSession.error_code) !!!")
         // An error occurred validating the id_token
         NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationFailed", object: nil)
     }
@@ -212,6 +225,8 @@ func validateIdToken() {
 // Authentication step 4 (optional) - Query the UserInfo endpoint to retrieve additional attributes about the user
 func queryUserInfoEndpoint() {
     
+    print("*** Querying the UserInfo endpoint ***")
+
     let userInfoUrl = pf_baseUrl + userinfo_url
 
     // Form a GET request using the OAuth access_token as Bearer credentials
@@ -257,7 +272,7 @@ func queryUserInfoEndpoint() {
                 NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationComplete", object: nil)
             }
         } else {
-            
+            print("!!! An error occurred: \(SessionManager.currentSession.error_code) !!!")
             // An error occurred querying the UserInfo endpoint
             NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationFailed", object: nil)
         }
@@ -266,6 +281,8 @@ func queryUserInfoEndpoint() {
 }
 
 func refreshOAuthAccessToken() {
+    
+    print("*** Refreshing the OAuth access token ***")
     
     // Build the request to the token endpoint
     let tokenUrl = pf_baseUrl + token_url
@@ -330,7 +347,7 @@ func refreshOAuthAccessToken() {
             // Notify that the request succeeded so we can refresh the view
             NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationComplete", object: nil)
         } else {
-            
+            print("!!! An error occurred: \(SessionManager.currentSession.error_code) !!!")
             // An error occured during the HTTP request to the token endpoint
             NSNotificationCenter.defaultCenter().postNotificationName("AuthenticationFailed", object: nil)
         }
