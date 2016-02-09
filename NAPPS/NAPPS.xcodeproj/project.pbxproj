@@ -14,6 +14,7 @@
 		F024FFAE1B8E26D5006885A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F024FFAC1B8E26D5006885A8 /* LaunchScreen.storyboard */; };
 		F024FFB71B8E378A006885A8 /* ProtocolHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024FFB51B8E378A006885A8 /* ProtocolHelper.swift */; };
 		F024FFB81B8E378A006885A8 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F024FFB61B8E378A006885A8 /* SessionManager.swift */; };
+		F05736781C0CABCE007AD3E5 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F05736771C0CABCE007AD3E5 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		F024FFAF1B8E26D5006885A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F024FFB51B8E378A006885A8 /* ProtocolHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolHelper.swift; sourceTree = "<group>"; };
 		F024FFB61B8E378A006885A8 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		F05736771C0CABCE007AD3E5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		F024FFA21B8E26D5006885A8 /* NAPPS */ = {
 			isa = PBXGroup;
 			children = (
+				F05736771C0CABCE007AD3E5 /* README.md */,
 				F024FFB51B8E378A006885A8 /* ProtocolHelper.swift */,
 				F024FFB61B8E378A006885A8 /* SessionManager.swift */,
 				F024FFA31B8E26D5006885A8 /* AppDelegate.swift */,
@@ -142,6 +145,7 @@
 			files = (
 				F024FFA61B8E26D5006885A8 /* ViewController.swift in Sources */,
 				F024FFA41B8E26D5006885A8 /* AppDelegate.swift in Sources */,
+				F05736781C0CABCE007AD3E5 /* README.md in Sources */,
 				F024FFB81B8E378A006885A8 /* SessionManager.swift in Sources */,
 				F024FFB71B8E378A006885A8 /* ProtocolHelper.swift in Sources */,
 			);
@@ -293,6 +297,7 @@
 				F024FFB41B8E26D5006885A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

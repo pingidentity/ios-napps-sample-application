@@ -11,6 +11,8 @@ Refer to the **Mobile Application SSO Developers Guide** at https://developer.pi
 
 This sample application has been built using PingFederate 8.0.1 and the OAuth Playground 3.2. Follow the documentation for PingFederate and the OAuth Playground to quickly stand up an OpenID Connect Provider / OAuth Authorization Server.
 
+Modify the OAuth client "ac_client" in the PingFederate configuration (OAuth Settings -> Client Management -> ac_client -> Redirect URIs) to include the application callback URI (com.pingidentity.developer.napps://oidc_callback) defined in the "ProtocolHelper.swift" file.
+
 Modify the "ProtocolHelper.swift" file with the URL of your PingFederate server and the name of your issuer.
 
 Note: Due to the Application Transport Security (ATS) feature of iOS9, your PingFederate server must have a valid SSL certificate.
