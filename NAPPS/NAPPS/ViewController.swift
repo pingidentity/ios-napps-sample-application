@@ -24,9 +24,9 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         print("*** Using SFSafariViewController to redirect user to authorization url: \(authorizationUrl) ***")
         
         // Present a SFSafariViewController to handle the websso flow
-        let safariVC = SFSafariViewController(URL: NSURL(string: authorizationUrl)!)
+        let safariVC = SFSafariViewController(url: URL(string: authorizationUrl)!)
         safariVC.delegate = self
-        presentViewController(safariVC, animated: true, completion: nil)
+        present(safariVC, animated: true, completion: nil)
     }
     
     @IBAction func actionSignInSilently() {
@@ -36,11 +36,11 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         print("*** Using an invisible SFSafariViewController to redirect user to authorization url: \(authorizationUrl) ***")
         
         // Present an invisible SFSafariViewController to handle the websso flow
-        let safariVC = SFSafariViewController(URL: NSURL(string: authorizationUrl)!)
+        let safariVC = SFSafariViewController(url: URL(string: authorizationUrl)!)
         safariVC.delegate = self
-        safariVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        safariVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         safariVC.view.alpha = 0.0
-        presentViewController(safariVC, animated: false, completion: nil)
+        present(safariVC, animated: false, completion: nil)
     }
     
     @IBAction func actionRefreshAccessToken() {
@@ -52,10 +52,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         
         queryUserInfoEndpoint()
 
-        let userInfoPopup = UIAlertController(title: "UserInfo Results", message: SessionManager.currentSession.rawUserInfoResponse, preferredStyle: UIAlertControllerStyle.Alert)
-        userInfoPopup.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
+        let userInfoPopup = UIAlertController(title: "UserInfo Results", message: SessionManager.currentSession.rawUserInfoResponse, preferredStyle: UIAlertControllerStyle.alert)
+        userInfoPopup.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default,handler: nil))
         
-        self.presentViewController(userInfoPopup, animated: true, completion: nil)
+        self.present(userInfoPopup, animated: true, completion: nil)
     }
     
     func updateView() {
@@ -64,15 +64,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         
         if (SessionManager.currentSession.inErrorState) {
             labelAuthenticationResult.text = SessionManager.currentSession.error_code
-            labelAuthenticationResult.textColor = UIColor.redColor()
+            labelAuthenticationResult.textColor = UIColor.red
         } else {
             
             if (SessionManager.currentSession.isAuthenticated) {
                 labelAuthenticationResult.text = "Authentication Sucessful"
-                labelAuthenticationResult.textColor = UIColor.greenColor()
+                labelAuthenticationResult.textColor = UIColor.green
             } else {
                 labelAuthenticationResult.text = "Please Sign In below..."
-                labelAuthenticationResult.textColor = UIColor.blackColor()
+                labelAuthenticationResult.textColor = UIColor.black
             }
         }
         
@@ -82,8 +82,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
             textviewIdToken.text = SessionManager.currentSession.id_token
             textviewRefreshToken.text = SessionManager.currentSession.refresh_token
             
-            buttonRefreshAccessToken.enabled = true
-            buttonCallUserInfo.enabled = true
+            buttonRefreshAccessToken.isEnabled = true
+            buttonCallUserInfo.isEnabled = true
             
         } else {
             
@@ -92,8 +92,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
             textviewIdToken.text = "[Not Logged In]"
             textviewRefreshToken.text = "[Not Logged In]"
             
-            buttonRefreshAccessToken.enabled = false
-            buttonCallUserInfo.enabled = false
+            buttonRefreshAccessToken.isEnabled = false
+            buttonCallUserInfo.isEnabled = false
         }
         self.view.setNeedsDisplay()
     }
@@ -102,14 +102,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     //Functions triggered when authentication events occur
     func authenticationComplete() {
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.updateView()
         })
     }
     
     func authenticationFailed() {
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.updateView()
         })
     }
@@ -119,8 +119,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "authenticationComplete", name: "AuthenticationComplete", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "authenticationFailed", name: "AuthenticationFailed", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.authenticationComplete), name: NSNotification.Name(rawValue: "AuthenticationComplete"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.authenticationFailed), name: NSNotification.Name(rawValue: "AuthenticationFailed"), object: nil)
         
         self.updateView()
     }
